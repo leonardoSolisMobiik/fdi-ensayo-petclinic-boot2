@@ -5,8 +5,8 @@ stack: java-spring-maven
 hereda: true
 cuarentena:
   patrones:
-  - spring-petclinic-api-gateway/src/test/java/org/springframework/samples/petclinic/api/ApiGatewayApplicationTests.java
-  - spring-petclinic-config-server/src/test/java/org/springframework/samples/petclinic/config/PetclinicConfigServerApplicationTests.java
-  - spring-petclinic-discovery-server/src/test/java/org/springframework/samples/petclinic/discovery/DiscoveryServerApplicationTests.java
+  - org/springframework/samples/petclinic/api/ApiGatewayApplicationTests.java
+  - org/springframework/samples/petclinic/config/PetclinicConfigServerApplicationTests.java
+  - org/springframework/samples/petclinic/discovery/DiscoveryServerApplicationTests.java
   vence: '2026-11-22'
   razon: pruebas que tocan datasource/red del cliente (detectadas por el inventario)
