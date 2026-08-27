@@ -1,0 +1,12 @@
+# Perfil del repositorio (ADR 0028): overrides sobre el perfil-base del stack.
+# Propuesto por el inventario de la FDI; lo ancla devops (D4_perfil).
+version: 1
+stack: java-spring-maven
+hereda: true
+cuarentena:
+  patrones:
+  - org/springframework/samples/petclinic/api/ApiGatewayApplicationTests.java
+  - org/springframework/samples/petclinic/config/PetclinicConfigServerApplicationTests.java
+  - org/springframework/samples/petclinic/discovery/DiscoveryServerApplicationTests.java
+  vence: '2026-11-22'
+  razon: pruebas que tocan datasource/red del cliente (detectadas por el inventario)
