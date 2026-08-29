@@ -29,6 +29,9 @@ class VisitResourceTest {
     @MockBean
     VisitRepository visitRepository;
 
+    @MockBean
+    VisitDateValidator visitDateValidator;
+
     @Test
     void shouldFetchVisits() throws Exception {
         given(visitRepository.findByPetIdIn(asList(111, 222)))

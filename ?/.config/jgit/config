@@ -1,0 +1,3 @@
+[filesystem "Eclipse Adoptium|17.0.15|//f56ccf6d63d8e4036b24516.file.core.windows.net/pvc-4fe80622-2275-4367-856c-73023c4ad948"]
+	timestampResolution = 4032 nanoseconds
+	minRacyThreshold = 0 nanoseconds

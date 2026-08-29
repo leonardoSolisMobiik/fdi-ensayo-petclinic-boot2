@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>9</version>
+  </parent>
+
+  <packaging>jar</packaging>
+  <groupId>org.webjars</groupId>
+  <artifactId>angular-ui-router</artifactId>
+  <version>1.0.20</version>
+  <name>Angular UI Router</name>
+  <description>WebJar for Angular UI Router</description>
+  <url>http://webjars.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <upstream.url>https://unpkg.com/@uirouter/angularjs@${version.unsnapshot}/release</upstream.url>
+    <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${project.version}</destDir>
+    <requirejs>
+        {
+            "paths": { "angular-ui-router": "angular-ui-router" },
+            "shim": { "angular-ui-router": [ "angular" ] }
+        }
+    </requirejs>
+  </properties>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://github.com/angular-ui/ui-router/blob/master/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>http://github.com/webjars/angular-ui-router</url>
+    <connection>scm:git:https://github.com/webjars/angular-ui-router.git</connection>
+    <developerConnection>scm:git:https://github.com/webjars/angular-ui-router.git</developerConnection>
+    <tag>angular-ui-router-1.0.20</tag>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>angularjs</artifactId>
+      <version>1.2.16-2</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.jamesward</groupId>
+        <artifactId>unsnapshot-maven-plugin</artifactId>
+        <version>0.1</version>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>unsnapshot</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals><goal>run</goal></goals>
+            <configuration>
+              <target>
+                <get src="${upstream.url}/angular-ui-router.js" dest="${destDir}" />
+                <get src="${upstream.url}/angular-ui-router.min.js" dest="${destDir}" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.5</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>sonatype-nexus-staging</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+    </plugins>
+    <resources>
+      <resource>
+        <directory>${project.basedir}/src/main/resources</directory>
+        <targetPath>${destDir}</targetPath>
+      </resource>
+    </resources>
+  </build>
+
+</project>

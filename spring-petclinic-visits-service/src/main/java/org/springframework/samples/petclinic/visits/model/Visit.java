@@ -54,7 +54,7 @@ public class Visit {
     @Builder.Default
     @Column(name = "visit_date")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Mexico_City")
     private Date date = new Date();
 
     @Size(max = 8192)

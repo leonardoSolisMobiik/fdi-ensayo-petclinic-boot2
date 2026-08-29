@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.netflix.eureka</groupId>
+  <artifactId>eureka-core</artifactId>
+  <version>1.10.17</version>
+  <name>eureka-core</name>
+  <description>eureka-core</description>
+  <url>https://github.com/Netflix/eureka</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>netflixgithub</id>
+      <name>Netflix Open Source Development</name>
+      <email>netflixoss@netflix.com</email>
+    </developer>
+  </developers>
+  <scm>
+    <url>https://github.com/Netflix/eureka</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>com.netflix.eureka</groupId>
+      <artifactId>eureka-client</artifactId>
+      <version>1.10.17</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-core</artifactId>
+      <version>1.11.277</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-ec2</artifactId>
+      <version>1.11.277</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-autoscaling</artifactId>
+      <version>1.11.277</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-sts</artifactId>
+      <version>1.11.277</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-route53</artifactId>
+      <version>1.11.277</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.4.18</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>jsr311-api</artifactId>
+      <version>1.1.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.10.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.woodstox</groupId>
+      <artifactId>woodstox-core</artifactId>
+      <version>6.2.1</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  <properties>
+    <nebula_Manifest_Version>1.0</nebula_Manifest_Version>
+    <nebula_Implementation_Title>com.netflix.eureka#eureka-core;1.10.17</nebula_Implementation_Title>
+    <nebula_Implementation_Version>1.10.17</nebula_Implementation_Version>
+    <nebula_Built_Status>release</nebula_Built_Status>
+    <nebula_Built_By>runner</nebula_Built_By>
+    <nebula_Built_OS>Linux</nebula_Built_OS>
+    <nebula_Build_Date>2021-10-20_23:14:53</nebula_Build_Date>
+    <nebula_Gradle_Version>6.8.3</nebula_Gradle_Version>
+    <nebula_Module_Owner>netflixoss@netflix.com</nebula_Module_Owner>
+    <nebula_Module_Email>netflixoss@netflix.com</nebula_Module_Email>
+    <nebula_Module_Source>/eureka-core</nebula_Module_Source>
+    <nebula_Module_Origin>https://github.com/Netflix/eureka</nebula_Module_Origin>
+    <nebula_Change>4d36f04</nebula_Change>
+    <nebula_Full_Change>4d36f04849541df6c6b8738622544d1b26dfe8d4</nebula_Full_Change>
+    <nebula_Branch>4d36f04849541df6c6b8738622544d1b26dfe8d4</nebula_Branch>
+    <nebula_Build_Host>https://github.com</nebula_Build_Host>
+    <nebula_Build_Job>__run_2</nebula_Build_Job>
+    <nebula_Build_Number>2</nebula_Build_Number>
+    <nebula_Build_Id>1365698831</nebula_Build_Id>
+    <nebula_Build_Url>https://github.com/Netflix/eureka/actions/runs/1365698831</nebula_Build_Url>
+    <nebula_Created_By>1.8.0_312-b07 (Azul Systems, Inc.)</nebula_Created_By>
+    <nebula_Build_Java_Version>1.8.0_312</nebula_Build_Java_Version>
+    <nebula_X_Compile_Target_JDK>1.8</nebula_X_Compile_Target_JDK>
+    <nebula_X_Compile_Source_JDK>1.8</nebula_X_Compile_Source_JDK>
+  </properties>
+</project>

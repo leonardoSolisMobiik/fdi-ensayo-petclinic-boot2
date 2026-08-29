@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <packaging>jar</packaging>
+    <groupId>org.webjars</groupId>
+    <artifactId>emberjs</artifactId>
+    <version>1.9.0-1</version>
+    <name>Ember.js</name>
+    <description>WebJar for Ember.js</description>
+    <url>http://webjars.org</url>
+
+    <licenses>
+        <license>
+            <name>Copyright (c) 2012 Yehuda Katz, Tom Dale, Charles Jolley and Ember.js contributors</name>
+            <url>https://github.com/emberjs/ember.js/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>http://github.com/webjars/emberjs</url>
+        <connection>scm:git:https://github.com/webjars/emberjs.git</connection>
+        <developerConnection>scm:git:https://github.com/webjars/emberjs.git</developerConnection>
+        <tag>emberjs-1.9.0-1</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>jamesward</id>
+            <name>James Ward</name>
+            <email>james@jamesward.org</email>
+        </developer>
+        <developer>
+            <id>rafelbev</id>
+            <name>Raphael Borg Ellul Vincenti</name>
+            <email>raphael@linux.org.mt</email>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>1.10.2-1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>handlebars</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <upstreamVersion>1.9.0</upstreamVersion>
+        <upstreamSourceUrl>http://builds.emberjs.com/tags/v${upstreamVersion}</upstreamSourceUrl>
+        <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${upstreamVersion}</destDir>
+        <requirejs>
+            {
+                "paths": {
+                    "emberjs": "ember"
+                },
+                "shim": {
+                    "emberjs": ["jquery"]
+                }
+            }
+        </requirejs>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0-beta-4</version>
+                <executions>
+                    <execution>
+                        <id>download-full-js</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${upstreamSourceUrl}</url>
+                            <fromFile>ember.js</fromFile>
+                            <toFile>${destDir}/ember.js</toFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-min-js</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${upstreamSourceUrl}</url>
+                            <fromFile>ember.min.js</fromFile>
+                            <toFile>${destDir}/ember.min.js</toFile>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>download-prod-js</id>
+                        <phase>process-resources</phase>
+                        <goals><goal>download-single</goal></goals>
+                        <configuration>
+                            <url>${upstreamSourceUrl}</url>
+                            <fromFile>ember.prod.js</fromFile>
+                            <toFile>${destDir}/ember.prod.js</toFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.4</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>sonatype-nexus-staging</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <targetPath>${destDir}</targetPath>
+            </resource>
+        </resources>
+    </build>
+
+</project>
