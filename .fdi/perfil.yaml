@@ -27,7 +27,15 @@ cuarentena:
 # el que este bloque desaparece y el repo vuelve a heredar del blueprint sin override.
 compuertas:
 - nombre: pruebas
-  argv: [mvn, -B, -o, -s, /run/fdi/credenciales/settings.xml, -Dmaven.repo.local=.fdi/m2,
+  argv: [mvn, -B, -o, -s, /run/fdi/credenciales/settings.xml, -Dmaven.repo.local=/fdi-cache/m2,
+         # La cache es COMPARTIDA entre corridas del repo, asi que dos lotes del mismo
+         # repo pueden escribirla a la vez: el repositorio local de Maven no es seguro
+         # para eso por defecto y se corrompe. Con file-lock, se serializan.
+         -Daether.syncContext.named.factory=file-lock,
+         # El nameMapper NO es opcional con file-lock: sin el, Maven aborta con
+         # «FileLockNamedLockFactory lock factory requires FS friendly NameMapper»
+         # (error INTERNO, no una compuerta roja). `file-gav` es el mapeo por artefacto.
+         -Daether.syncContext.named.nameMapper=file-gav,
          "-Dsurefire.excludesFile=${maven.multiModuleProjectDirectory}/.fdi/cuarentena.txt",
          "--projects={modulo}", "-Dtest={prueba}", -DfailIfNoSpecifiedTests=false,
          "org.jacoco:jacoco-maven-plugin:0.8.12:prepare-agent", test,
@@ -45,3 +53,29 @@ compuertas:
 # En un repo de CLIENTE esto NO va encendido: reescribir su historia es decision suya.
 ramas:
   evidencia_force: true
+
+# La instalacion tiene que poblar la MISMA cache que leen las compuertas: si difieren, se instala
+# en un sitio y se lee de otro. El blueprint instala en `.fdi/m2`, DENTRO del workspace —que es por
+# corrida—, asi que cada lote volvia a bajar ~200 MB: medido, 9m50s + 11m + 9m55s en tres corridas
+# seguidas del mismo repo.
+#
+# `subproyectos` es una LISTA y al heredar las listas REEMPLAZAN, asi que va copiada del blueprint
+# con un solo cambio: la ruta de la cache. Si el blueprint cambia lo demas, hay que sincronizar
+# aqui — el precio de sobreescribir una lista.
+subproyectos:
+  - cwd: .
+    build:
+      instalar: [fdi-instalar-maven, -s, /run/fdi/credenciales/settings.xml,
+                 -Dmaven.repo.local=/fdi-cache/m2,
+                 -Daether.syncContext.named.factory=file-lock,
+         # El nameMapper NO es opcional con file-lock: sin el, Maven aborta con
+         # «FileLockNamedLockFactory lock factory requires FS friendly NameMapper»
+         # (error INTERNO, no una compuerta roja). `file-gav` es el mapeo por artefacto.
+         -Daether.syncContext.named.nameMapper=file-gav]
+      # Vacia a proposito: `build.cache` son rutas DENTRO del subproyecto (que no se borran y no
+      # se recorren), y la cache ya no vive ahi. Efecto util de lado: el verificador deja de
+      # poder tropezarse con 200 MB de dependencias al explorar el repo.
+      cache: []
+      manifiestos: [pom.xml, "*/pom.xml"]
+      timeout_s: 2400
+      limpiar: []
