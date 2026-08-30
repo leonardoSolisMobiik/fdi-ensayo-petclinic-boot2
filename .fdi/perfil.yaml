@@ -10,3 +10,30 @@ cuarentena:
   - org/springframework/samples/petclinic/discovery/DiscoveryServerApplicationTests.java
   vence: '2026-11-22'
   razon: pruebas que tocan datasource/red del cliente (detectadas por el inventario)
+
+# --- FASE 1 del banco comparativo (temporal, 2026-08-29) --------------------------------------
+# Deja el muro con las DOS compuertas que decidió el experimento: pruebas y cobertura. Las listas
+# REEMPLAZAN al heredar (`domain/perfil.efectivo`), asi que esto sustituye la lista completa del
+# blueprint — sast, sbom, secretos y duplicacion NO corren en esta fase.
+#
+# Por que: el costo de una HU se reparte entre razonar y verificar, y mezclados no se puede
+# atribuir ninguna mejora. Con solo estas dos, un pase del muro baja de ~8 min a ~90 s y lo que
+# quede de diferencia contra la referencia humana es razonamiento, no infraestructura.
+#
+# Las compuertas van copiadas VERBATIM del blueprint del stack: el experimento cambia CUALES
+# corren, jamas COMO corren — si el argv difiere, deja de medir lo mismo.
+#
+# TEMPORAL: las fases siguientes reponen compuertas hasta volver a la lista completa, momento en
+# el que este bloque desaparece y el repo vuelve a heredar del blueprint sin override.
+compuertas:
+- nombre: pruebas
+  argv: [mvn, -B, -o, -s, /run/fdi/credenciales/settings.xml, -Dmaven.repo.local=.fdi/m2,
+         "-Dsurefire.excludesFile=${maven.multiModuleProjectDirectory}/.fdi/cuarentena.txt",
+         "--projects={modulo}", "-Dtest={prueba}", -DfailIfNoSpecifiedTests=false,
+         "org.jacoco:jacoco-maven-plugin:0.8.12:prepare-agent", test,
+         "org.jacoco:jacoco-maven-plugin:0.8.12:report"]
+  reporte: {formato: junit, rutas: ["**/target/surefire-reports/TEST-*.xml"]}
+  timeout_s: 1800
+- nombre: cobertura
+  argv: []
+  reporte: {formato: jacoco, rutas: ["**/target/site/jacoco/jacoco.xml"]}
