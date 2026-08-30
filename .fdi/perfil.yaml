@@ -37,3 +37,11 @@ compuertas:
 - nombre: cobertura
   argv: []
   reporte: {formato: jacoco, rutas: ["**/target/site/jacoco/jacoco.xml"]}
+
+# Repo de ENSAYO de la Fabrica: la rama de trabajo la posee ella y su contenido se regenera en
+# cada corrida, asi que puede reemplazar su propio snapshot. Sin esto, una corrida que escala deja
+# su commit de evidencia y la SIGUIENTE —aunque llegue a verde— no puede publicarse: el push se
+# rechaza por non-fast-forward. Medido en dev con RUN-19 → RUN-20.
+# En un repo de CLIENTE esto NO va encendido: reescribir su historia es decision suya.
+ramas:
+  evidencia_force: true
