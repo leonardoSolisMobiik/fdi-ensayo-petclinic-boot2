@@ -37,7 +37,12 @@ compuertas:
          # (error INTERNO, no una compuerta roja). `file-gav` es el mapeo por artefacto.
          -Daether.syncContext.named.nameMapper=file-gav,
          "-Dsurefire.excludesFile=${maven.multiModuleProjectDirectory}/.fdi/cuarentena.txt",
-         "--projects={modulo}", "-Dtest={prueba}", -DfailIfNoSpecifiedTests=false,
+         "--projects={modulo}",
+         # Tambien los modulos que DEPENDEN del acotado: sin esto, el muro acotado daria verdes
+         # falsos. Inerte sin `--projects` (comprobado en dev: con `-amd` suelto Maven construyo
+         # los 8 modulos igual que sin el).
+         -amd,
+         "-Dtest={prueba}", -DfailIfNoSpecifiedTests=false,
          "org.jacoco:jacoco-maven-plugin:0.8.12:prepare-agent", test,
          "org.jacoco:jacoco-maven-plugin:0.8.12:report"]
   reporte: {formato: junit, rutas: ["**/target/surefire-reports/TEST-*.xml"]}
