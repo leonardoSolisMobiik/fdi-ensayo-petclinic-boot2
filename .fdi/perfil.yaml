@@ -27,7 +27,7 @@ cuarentena:
 # el que este bloque desaparece y el repo vuelve a heredar del blueprint sin override.
 compuertas:
 - nombre: pruebas
-  argv: [mvn, -B, -o, -s, /run/fdi/credenciales/settings.xml, -Dmaven.repo.local=/fdi-cache/m2,
+  argv: [mvn, -B, -o, -s, /run/fdi/credenciales/settings.xml, -Dmaven.repo.local=.fdi/m2,
          # La cache es COMPARTIDA entre corridas del repo, asi que dos lotes del mismo
          # repo pueden escribirla a la vez: el repositorio local de Maven no es seguro
          # para eso por defecto y se corrompe. Con file-lock, se serializan.
@@ -54,32 +54,28 @@ compuertas:
 ramas:
   evidencia_force: true
 
-# La instalacion tiene que poblar la MISMA cache que leen las compuertas: si difieren, se instala
-# en un sitio y se lee de otro. El blueprint instala en `.fdi/m2`, DENTRO del workspace —que es por
-# corrida—, asi que cada lote volvia a bajar ~200 MB: medido, 9m50s + 11m + 9m55s en tres corridas
-# seguidas del mismo repo.
-#
 # `subproyectos` es una LISTA y al heredar las listas REEMPLAZAN, asi que va copiada del blueprint
-# con un solo cambio: la ruta de la cache. Si el blueprint cambia lo demas, hay que sincronizar
+# con un solo cambio: el file-lock de Maven. Si el blueprint cambia lo demas, hay que sincronizar
 # aqui — el precio de sobreescribir una lista.
+#
+# DONDE vive la cache ya NO se declara aqui: es `cache_ambito` en la RAIZ del perfil, que este repo
+# HEREDA del blueprint (`stack`). Estaba dentro de este bloque y se perdia justo por lo de arriba —
+# copiar la lista se llevaba el ambito por delante, en silencio.
 subproyectos:
   - cwd: .
     build:
       instalar: [fdi-instalar-maven, -s, /run/fdi/credenciales/settings.xml,
-                 -Dmaven.repo.local=/fdi-cache/m2,
+                 -Dmaven.repo.local=.fdi/m2,
                  -Daether.syncContext.named.factory=file-lock,
          # El nameMapper NO es opcional con file-lock: sin el, Maven aborta con
          # «FileLockNamedLockFactory lock factory requires FS friendly NameMapper»
          # (error INTERNO, no una compuerta roja). `file-gav` es el mapeo por artefacto.
          -Daether.syncContext.named.nameMapper=file-gav]
-      # Vacia a proposito: `build.cache` son rutas DENTRO del subproyecto (que no se borran y no
-      # se recorren), y la cache ya no vive ahi. Efecto util de lado: el verificador deja de
-      # poder tropezarse con 200 MB de dependencias al explorar el repo.
-      cache: []
-      # La cache vive FUERA del workspace (/fdi-cache) y sobrevive a las corridas, asi que
-      # la marca de instalacion tiene que sobrevivir con ella: es lo que certifica. Sin
-      # esto cada corrida reinstala lo que ya esta — medido, 4m38s con CERO descargas.
-      cache_compartida: true
+      # La RUTA de la cache, relativa al subproyecto. El sandbox monta ENCIMA de ella el
+      # almacenamiento que `cache_ambito` decida, asi que el argv no cambia y Maven no se entera.
+      # Sirve ademas para podarla del contexto: el verificador no se tropieza con 200 MB de
+      # dependencias al explorar el repo.
+      cache: [.fdi/m2]
       manifiestos: [pom.xml, "*/pom.xml"]
       timeout_s: 2400
       limpiar: []
