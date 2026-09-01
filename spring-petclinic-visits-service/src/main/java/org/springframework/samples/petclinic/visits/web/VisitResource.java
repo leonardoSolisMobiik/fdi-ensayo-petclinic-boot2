@@ -50,6 +50,8 @@ class VisitResource {
 
     private final VisitRepository visitRepository;
 
+    private final VisitDateValidator visitDateValidator;
+
     @PostMapping("owners/*/pets/{petId}/visits")
     @ResponseStatus(HttpStatus.CREATED)
     public Visit create(
@@ -57,6 +59,7 @@ class VisitResource {
         @PathVariable("petId") @Min(1) int petId) {
 
         visit.setPetId(petId);
+        visitDateValidator.validate(visit.getDate());
         log.info("Saving visit {}", visit);
         return visitRepository.save(visit);
     }
